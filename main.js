@@ -47,10 +47,7 @@ client.on('ready', () => {
         
         if(command == "specific-artist") {
             const description = args.find(arg => arg.name.toLowerCase() == "name").value;
-            // const embed = new discord.MessageEmbed()
-            //     .setTitle("Song picked!")
-            //     .setDescription(arrayTheWeekend[theWeekend])
-            //     .setAuthor(interaction.member.user.username);
+            
             
             client.api.interactions(interaction.id, interaction.token).callback.post({
                 data: {
@@ -72,30 +69,6 @@ async function createAPIMessage(interaction, content) {
 }
 
 client.login(require('./config.json').token);
-
-
-
-
-
-
-
-
-
-
-// PACKGES
-// require('dotenv').config();
-// const Discord= require('discord.js');
-// const Bot = new Discord.Client();
-
-// // TOKEN
-// const TOKEN = process.env.TOKEN;
-
-// // THE BOT ONLINE
-// Bot.login(TOKEN)
-// Bot.on('ready', (client)=>{
-//     console.log('Logged in as '+ Bot.user.tag);
-// })
-
 
 
 // TINY DATABASES 
@@ -122,26 +95,4 @@ let arrayTheWeekend= [
 
 ];
 
-
-
-// Bot.on('message', (message)=>{
-
-
-//     msg = message.content.toLowerCase();
-//    if(msg.includes('the weekend')){
-//         let theWeekend = Math.floor(Math.random()*arrayTheWeekend.length) ;
-
-//        message.channel.send(arrayTheWeekend[theWeekend])
-//    }
-//     else if(msg.includes('random')){
-
-        
-//        let song = Math.floor(Math.random()*arraysongs.length) ;
-        
-       
-//        let songLink = new Discord.MessageEmbed().setDescription(arraysongs[song])
-        
-//         message.channel.send(arraysongs[song])
-//     }
-// });
 
