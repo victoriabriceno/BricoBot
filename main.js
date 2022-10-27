@@ -1,64 +1,62 @@
 const discord = require('discord.js');
 const client = new discord.Client();
+// new 
+require('dotenv').config();
+const mongoose = require('mongoose'); 
+
+mongoose.connect(require('./config.json').mongo,{
+
+userNewUrlParser:true,
+useUnifiedTopology:true,
+userFindAndModify:false
+}).then(()=>{
+console.log('Connected to the database!')
+}).catch((err)=>{
+
+    console.log(err); 
+
+});
 
 client.on('ready', () => {
-    console.log('ready');
-
-    client.api.applications(client.user.id).commands.post({
-        data: {
-            name: "suggest",
-            description: "Suggest a random song!"
-            
-        }
-    });
-
-    client.api.applications(client.user.id).commands.post({
-        data: {
-            name: "specific-artist",
-            description: "Give a random song from the artist!",
-
-            options: [
-                {
-                    name: "name",
-                    description: "The name of the artist",
-                    type: 3,
-                    required: true
-                }
-            ]
-        }
-    });
+console.log('ready');
 
 
-    let theWeekend = Math.floor(Math.random()*arrayTheWeekend.length) ;
-    client.ws.on('INTERACTION_CREATE', async interaction => {
-        const command = interaction.data.name.toLowerCase();
-        const args = interaction.data.options;
+client.ws.on('INTERACTION_CREATE', async interaction => {
 
-        if(command == 'suggest') {
-            client.api.interactions(interaction.id, interaction.token).callback.post({
-                data: {
-                    type: 4,
+
+    const command = interaction.data.name.toLowerCase();
+            const args = interaction.data.options;
+    
+            if(command == 'suggest') {
+                client.api.interactions(interaction.id, interaction.token).callback.post({
                     data: {
-                        content: arraysongs[Math.floor(Math.random()*arraysongs.length)]
+                        type: 4,
+                        data: {
+                            content: arraysongs[Math.floor(Math.random()*arraysongs.length)]
+                        }
                     }
-                }
-            });
-        }
-        
-        if(command == "specific-artist") {
-            const description = args.find(arg => arg.name.toLowerCase() == "name").value;
+                });
+            }
             
-            
-            client.api.interactions(interaction.id, interaction.token).callback.post({
-                data: {
-                    type: 4,
-                    data: await createAPIMessage(interaction, arrayTheWeekend[Math.floor(Math.random()*arrayTheWeekend.length)])
-                }
-            });
-        }
-        
-    });
+            if(command == "specific-artist") {
+                const description = args.find(arg => arg.name.toLowerCase() == "name").value;
+                
+                
+                client.api.interactions(interaction.id, interaction.token).callback.post({
+                    data: {
+                        type: 4,
+                        data: await createAPIMessage(interaction, arrayTheWeekend[Math.floor(Math.random()*arrayTheWeekend.length)])
+                    }
+                });
+            }
+
+
+})
+
+
 });
+
+
 
 async function createAPIMessage(interaction, content) {
     const apiMessage = await discord.APIMessage.create(client.channels.resolve(interaction.channel_id), content)
