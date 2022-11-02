@@ -3,14 +3,27 @@ const client = new discord.Client();
 // new 
 require('dotenv').config();
 const mongoose = require('mongoose'); 
+const songSchema = require ('./schemas/song')
+
+const song = {
+    id:0,
+    artist: "The weekend",
+    song: "Less than Zero",
+    link: "https://www.youtube.com/watch?v=LKsgDcckur0'"
+}
+
 
 mongoose.connect(require('./config.json').mongo,{
 
 userNewUrlParser:true,
 useUnifiedTopology:true,
 userFindAndModify:false
-}).then(()=>{
+}).then(async ()=>{
 console.log('Connected to the database!')
+
+
+ await new songSchema(song).save()
+
 }).catch((err)=>{
 
     console.log(err);
@@ -18,12 +31,15 @@ console.log('Connected to the database!')
 
 });
 
+
+
 client.on('ready', () => {
 console.log('ready');
 
 
 client.ws.on('INTERACTION_CREATE', async interaction => {
 
+    const result = await songSchema.findOne({});
 
     const command = interaction.data.name.toLowerCase();
             const args = interaction.data.options;
@@ -33,8 +49,9 @@ client.ws.on('INTERACTION_CREATE', async interaction => {
                     data: {
                         type: 4,
                         data: {
-                            content: arraysongs[Math.floor(Math.random()*arraysongs.length)]
+                            content: `artist: ${song.artist}\nsong: ${song.song}\nlink: ${song.link}`
                         }
+                    
                     }
                 });
             }
@@ -46,7 +63,7 @@ client.ws.on('INTERACTION_CREATE', async interaction => {
                 client.api.interactions(interaction.id, interaction.token).callback.post({
                     data: {
                         type: 4,
-                        data: await createAPIMessage(interaction, arrayTheWeekend[Math.floor(Math.random()*arrayTheWeekend.length)])
+                        data: await createAPIMessage(interaction,arrayTheWeekend[Math.floor(Math.random()*arrayTheWeekend.length)])
                     }
                 });
             }
