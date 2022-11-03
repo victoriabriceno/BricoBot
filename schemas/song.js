@@ -7,4 +7,4 @@ song: String,
 link: String
 })
 
-module.exports = mongoose.model('song',userSchema)
+module.exports = mongoose.model('items',userSchema)

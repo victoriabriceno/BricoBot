@@ -5,11 +5,11 @@ require('dotenv').config();
 const mongoose = require('mongoose'); 
 const songSchema = require ('./schemas/song')
 
-const song = {
-    id:0,
-    artist: "The weekend",
-    song: "Less than Zero",
-    link: "https://www.youtube.com/watch?v=LKsgDcckur0'"
+const data = {
+    id:5,
+    artist: "Tyga, Doja Cat",
+    song: "Freaky Deaky",
+    link: "https://www.youtube.com/watch?v=5ZHXYnGVlcg"
 }
 
 
@@ -22,7 +22,7 @@ userFindAndModify:false
 console.log('Connected to the database!')
 
 
- await new songSchema(song).save()
+ //await new songSchema(data).save()
 
 }).catch((err)=>{
 
@@ -45,11 +45,23 @@ client.ws.on('INTERACTION_CREATE', async interaction => {
             const args = interaction.data.options;
     
             if(command == 'suggest') {
+                 
+                const randomNumber = Math.floor(Math.random() * songSchema.length);
+                const query = {id: randomNumber};
+
+                 const result = await songSchema.findOne(query) ;
+                
+                data.artist = result.artist;
+                data.song = result.song;
+                data.link  = result.link;
+              
+
                 client.api.interactions(interaction.id, interaction.token).callback.post({
                     data: {
                         type: 4,
                         data: {
-                            content: `artist: ${song.artist}\nsong: ${song.song}\nlink: ${song.link}`
+                            content: `Artist: ${data.artist}\nSong: ${data.song}\nLink: ${data.link}`
+                            
                         }
                     
                     }
@@ -88,17 +100,6 @@ client.login(require('./config.json').token);
 
 
 // TINY DATABASES 
-let arraysongs = [
-
-'https://www.youtube.com/watch?v=hsWtqQMpCg4&list=RDhsWtqQMpCg4&start_radio=1',
-'https://www.youtube.com/watch?v=LKsgDcckur0',
-'https://www.youtube.com/watch?v=j1W5An7eo2g',
-'https://www.youtube.com/watch?v=5ZHXYnGVlcg',
-'https://www.youtube.com/watch?v=H5v3kku4y6Q',
-'https://www.youtube.com/watch?v=VbfpW0pbvaU',
-'https://www.youtube.com/watch?v=_ecXNJP-ERY',
-'https://www.youtube.com/watch?v=W1tzURKYFNs',
-];
 
 let arrayTheWeekend= [
 
