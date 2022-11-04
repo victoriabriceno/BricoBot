@@ -6,10 +6,10 @@ const mongoose = require('mongoose');
 const songSchema = require ('./schemas/song')
 
 const data = {
-    id:5,
-    artist: "Tyga, Doja Cat",
-    song: "Freaky Deaky",
-    link: "https://www.youtube.com/watch?v=5ZHXYnGVlcg"
+    id:6,
+    artist: "the weekend",
+    song: "take my breath",
+    link: "https://www.youtube.com/watch?v=eT1E3gmST9U"
 }
 
 
@@ -38,8 +38,6 @@ console.log('ready');
 
 
 client.ws.on('INTERACTION_CREATE', async interaction => {
-
-    const result = await songSchema.findOne({});
 
     const command = interaction.data.name.toLowerCase();
             const args = interaction.data.options;
@@ -71,13 +69,36 @@ client.ws.on('INTERACTION_CREATE', async interaction => {
             if(command == "specific-artist") {
                 const description = args.find(arg => arg.name.toLowerCase() == "name").value;
                 
+                const query = {artist: description.toLowerCase()};
+                 
+                data.artist = null;
+                try{
+                const cursor = await songSchema.find({artist: description.toLowerCase()});
+               
+
+                const randomSongs = Math.floor(Math.random() * cursor.length);
                 
-                client.api.interactions(interaction.id, interaction.token).callback.post({
-                    data: {
-                        type: 4,
-                        data: await createAPIMessage(interaction,arrayTheWeekend[Math.floor(Math.random()*arrayTheWeekend.length)])
-                    }
-                });
+                data.artist = cursor[randomSongs].artist;
+                data.song = cursor[randomSongs].song;
+                data.link  = cursor[randomSongs].link;
+                
+                // const result = await songSchema.findOne(query) ;
+               
+                    client.api.interactions(interaction.id, interaction.token).callback.post({
+                        data: {
+                            type: 4,
+                            data: await createAPIMessage(interaction,`Artist: ${data.artist}\nSong: ${data.song}\nLink: ${data.link}`)
+                        }
+                    });
+                }catch(err){
+                    client.api.interactions(interaction.id, interaction.token).callback.post({
+                        data: {
+                            type: 4,
+                            data: await createAPIMessage(interaction,"Sorry this artist is not in the database!")
+                        }
+                    });
+                }
+               
             }
 
 
@@ -99,17 +120,5 @@ async function createAPIMessage(interaction, content) {
 client.login(require('./config.json').token);
 
 
-// TINY DATABASES 
-
-let arrayTheWeekend= [
-
-'https://www.youtube.com/watch?v=LKsgDcckur0',
-'https://www.youtube.com/watch?v=XXYlFuWEuKI',
-'https://www.youtube.com/watch?v=4NRXx6U8ABQ',
-'https://www.youtube.com/watch?v=rhTl_OyehF8',
-'https://www.youtube.com/watch?v=yzTuBuRdAyA',
-'https://www.youtube.com/watch?v=waU75jdUnYw',
-
-];
 
 
