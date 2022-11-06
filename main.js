@@ -6,10 +6,10 @@ const mongoose = require('mongoose');
 const songSchema = require ('./schemas/song')
 
 const data = {
-    id:6,
-    artist: "the weekend",
-    song: "take my breath",
-    link: "https://www.youtube.com/watch?v=eT1E3gmST9U"
+    id:10,
+    artist: "bee gees",
+    song: "night fever",
+    link: "https://www.youtube.com/watch?v=-ihs-vT9T3Q&list=RDEMcfITQdR3Yi7wdBAWKFypdA&index=2"
 }
 
 
@@ -44,7 +44,8 @@ client.ws.on('INTERACTION_CREATE', async interaction => {
     
             if(command == 'suggest') {
                  
-                const randomNumber = Math.floor(Math.random() * songSchema.length);
+                const cursor = await songSchema.find({});
+                const randomNumber = Math.floor(Math.random() * cursor.length);
                 const query = {id: randomNumber};
 
                  const result = await songSchema.findOne(query) ;
