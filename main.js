@@ -1,9 +1,12 @@
 const discord = require('discord.js');
 const client = new discord.Client();
 // new 
+const ytdl = require("ytdl-core");
 require('dotenv').config();
 const mongoose = require('mongoose'); 
 const songSchema = require ('./schemas/song')
+
+
 
 const data = {
     id:10,
@@ -30,7 +33,6 @@ console.log('Connected to the database!')
 
 
 });
-
 
 
 client.on('ready', () => {
@@ -100,6 +102,20 @@ client.ws.on('INTERACTION_CREATE', async interaction => {
                     });
                 }
                
+            }
+
+            if(command == "play-song"){
+                const url = args.find(arg=> arg.name.toLowerCase() == "url").value;
+               
+
+                client.api.interactions(interaction.id, interaction.token).callback.post({
+                    data: {
+                        type: 4,
+                        data: await createAPIMessage(interaction,"hello")
+                    }
+                });
+              
+
             }
 
 

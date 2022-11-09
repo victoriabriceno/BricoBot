@@ -8,9 +8,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/opus": "^0.3.2",
+    "discord-player": "^3.0.2",
     "discord.js": "^12.5.3",
     "dotenv": "^16.0.3",
-    "mongoose": "^5.11.14"
+    "mongoose": "^5.11.14",
+    "ytdl-core": "^0.29.7"
   },
   "keywords": [],
   "description": ""
