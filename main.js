@@ -1,7 +1,6 @@
 const discord = require('discord.js');
 const client = new discord.Client();
 // new 
-const ytdl = require("ytdl-core");
 require('dotenv').config();
 const mongoose = require('mongoose'); 
 const songSchema = require ('./schemas/song')
