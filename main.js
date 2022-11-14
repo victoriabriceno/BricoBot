@@ -147,19 +147,19 @@ client.ws.on('INTERACTION_CREATE', async interaction => {
 
             }
 
-            if(command == "play-song") {
-                const description = args.find(arg => arg.name.toLowerCase() == "url").value;
+            // if(command == "play-song") {
+            //     const description = args.find(arg => arg.name.toLowerCase() == "url").value;
                 
                
         
 
 
-                    client.api.interactions(interaction.id, interaction.token).callback.post({
-                        data: {
-                            type: 4,
-                            data: await createAPIMessage(interaction,`Now playing: ${info.title}`)
-                        }
-                    });
+            //         client.api.interactions(interaction.id, interaction.token).callback.post({
+            //             data: {
+            //                 type: 4,
+            //                 data: await createAPIMessage(interaction,`Now playing: ${info.title}`)
+            //             }
+            //         });
                     
                     
                 
@@ -168,7 +168,7 @@ client.ws.on('INTERACTION_CREATE', async interaction => {
                
                
                
-            }
+            // }
 
 
 })

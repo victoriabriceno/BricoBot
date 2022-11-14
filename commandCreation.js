@@ -26,21 +26,21 @@ client.api.applications(client.user.id).commands.post({
 });
 
 
-client.api.applications(client.user.id).commands.post({
-    data: {
-        name: "play-song",
-        description: "Play a song from Youtube!",
+// client.api.applications(client.user.id).commands.post({
+//     data: {
+//         name: "play-song",
+//         description: "Play a song from Youtube!",
 
-        options: [
-            {
-                name: "url",
-                description: "The song's URL",
-                type: 3,
-                required: true
-            }
-        ]
-    }
-});
+//         options: [
+//             {
+//                 name: "url",
+//                 description: "The song's URL",
+//                 type: 3,
+//                 required: true
+//             }
+//         ]
+//     }
+// });
 
 client.api.applications(client.user.id).commands.post({
     data: {
