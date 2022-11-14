@@ -1,8 +1,8 @@
 {
 
-     "token":"MTAzMDk3MzE1OTUwNTEzNzc0Ng.GyXtrd.fE3acKTSaDlFByV5AM9KV91K-EkJ2MxZ1OZqrU",
+     "token":"",
 
-      "mongo":"mongodb+srv://bricobot:bricobot@bricobotcluster.a3t6kmf.mongodb.net/test"
+      "mongo":""
 
 
 

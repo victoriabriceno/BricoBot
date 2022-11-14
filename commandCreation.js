@@ -41,3 +41,11 @@ client.api.applications(client.user.id).commands.post({
         ]
     }
 });
+
+client.api.applications(client.user.id).commands.post({
+    data: {
+        name: "artists-list",
+        description: "Display all the artists available!"
+        
+    }
+});

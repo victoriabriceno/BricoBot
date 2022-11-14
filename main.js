@@ -1,6 +1,7 @@
 const discord = require('discord.js');
 const client = new discord.Client();
 // new 
+const ytdl = require('ytdl-core');
 require('dotenv').config();
 const mongoose = require('mongoose'); 
 const songSchema = require ('./schemas/song')
@@ -8,10 +9,10 @@ const songSchema = require ('./schemas/song')
 
 
 const data = {
-    id:10,
-    artist: "bee gees",
-    song: "night fever",
-    link: "https://www.youtube.com/watch?v=-ihs-vT9T3Q&list=RDEMcfITQdR3Yi7wdBAWKFypdA&index=2"
+    id:15,
+    artist: "glen campbell",
+    song: "souther nights",
+    link: "https://www.youtube.com/watch?v=JYwmRTUCrVw"
 }
 
 
@@ -34,9 +35,9 @@ console.log('Connected to the database!')
 });
 
 
+
 client.on('ready', () => {
 console.log('ready');
-
 
 client.ws.on('INTERACTION_CREATE', async interaction => {
 
@@ -60,7 +61,7 @@ client.ws.on('INTERACTION_CREATE', async interaction => {
                     data: {
                         type: 4,
                         data: {
-                            content: `Artist: ${data.artist}\nSong: ${data.song}\nLink: ${data.link}`
+                            content: `**Artist:** ${data.artist}\n**Song:** ${data.song}\n**Link:** ${data.link}`
                             
                         }
                     
@@ -89,7 +90,7 @@ client.ws.on('INTERACTION_CREATE', async interaction => {
                     client.api.interactions(interaction.id, interaction.token).callback.post({
                         data: {
                             type: 4,
-                            data: await createAPIMessage(interaction,`Artist: ${data.artist}\nSong: ${data.song}\nLink: ${data.link}`)
+                            data: await createAPIMessage(interaction,`**Artist:** ${data.artist}\n**Song:** ${data.song}\n**Link:** ${data.link}`)
                         }
                     });
                 }catch(err){
@@ -103,18 +104,70 @@ client.ws.on('INTERACTION_CREATE', async interaction => {
                
             }
 
-            if(command == "play-song"){
-                const url = args.find(arg=> arg.name.toLowerCase() == "url").value;
-               
+            if(command == "artists-list"){
+                
+                const sort = {artist:1};
+                const cursor = await songSchema.find({}).sort(sort);
+                 output = "";
+                numofsongs = 0;
+                 previousartistname = " ";
+                 currentartistname = " ";
+
+                 previousartistname = cursor[0].artist;
+
+                for (let index = 0; index < cursor.length; index++) {
+                   
+                    currentartistname = cursor[index].artist;
+       
+                    if(currentartistname != previousartistname){
+
+                        output += `${previousartistname}-**songs:** ${numofsongs}\n`;
+                        previousartistname = currentartistname;
+                        numofsongs = 1;
+                    }
+                    else{
+                        numofsongs++;
+                    }
+                    
+                }
+
+                output += `${previousartistname}-**songs:** ${numofsongs}\n`;
 
                 client.api.interactions(interaction.id, interaction.token).callback.post({
                     data: {
                         type: 4,
-                        data: await createAPIMessage(interaction,"hello")
+                        data: {
+                            content: `**Bricobot artists list**\n${output}`
+                            
+                        }
+                    
                     }
                 });
               
 
+            }
+
+            if(command == "play-song") {
+                const description = args.find(arg => arg.name.toLowerCase() == "url").value;
+                
+               
+        
+
+
+                    client.api.interactions(interaction.id, interaction.token).callback.post({
+                        data: {
+                            type: 4,
+                            data: await createAPIMessage(interaction,`Now playing: ${info.title}`)
+                        }
+                    });
+                    
+                    
+                
+                
+               
+               
+               
+               
             }
 
 
